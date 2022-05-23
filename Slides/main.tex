@@ -1,0 +1,159 @@
+\documentclass[9pt]{beamer}
+%\documentclass[9pt]{beamer}
+
+\mode<presentation> {
+	
+	
+	\usetheme{Antibes}
+	
+	\usecolortheme{rose}
+	
+	\setbeamertemplate{footline} 
+}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+%\usepackage{german}
+\usepackage{amsthm}
+%\usepackage{capt-of}
+\usepackage[font=small,
+figurewithin=section,labelsep=space]{caption}
+\usepackage{amssymb}
+\usepackage{tabto}
+\usepackage{graphicx}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{tcolorbox}
+\usepackage{relsize}
+\usepackage{svg}
+\usepackage{tikz-cd}
+\usepackage{subfigure}
+\usepackage{faktor}
+%\usepackage{ytableau,tikz,varwidth}
+%\usetikzlibrary{calc}
+\usepackage{verbatim}
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{presentation.bib}
+
+
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{Numerical Smoothing for Efficient Option Pricing}
+
+\author{Jonas Nießen} % Your name
+\institute[RWTH] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+	RWTH Aachen \\ % Your institution for the title page
+	%\medskip
+	%\textit{john@smith.com} % Your email address
+}
+\date{}
+
+
+\let\div\relax
+\DeclareMathOperator{\div}{div}
+\newcommand{\dd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\ddi}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\ddtwo}[1]{\frac{\partial^2}{\partial #1^2}}
+\newcommand{\ddtwoi}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\ddtwod}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\kl}{\left(}
+\newcommand{\kr}{\right)}
+\newcommand{\el}{\left[}
+\newcommand{\er}{\right]}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\cl}{\mathcal{L}}
+\newcommand{\cf}{\mathcal{F}}
+\newcommand{\cb}{\mathcal{B}}
+\newcommand{\cbe}{C_{\text{BE}}}
+\newcommand{\simd}{\overset{\text{d}}{\sim}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Ocal}{\mathcal{O}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\conp}{\xrightarrow{P}}
+\newcommand{\cond}{\xrightarrow{\text{d}}}
+\newcommand{\conas}{\xrightarrow{\text{f.s.}}}
+\newcommand{\conlp}{\xrightarrow{L^p}}
+\newcommand{\conlpx}[1]{\xrightarrow{L^{#1}}}
+\newcommand{\conv}{\xrightarrow{\text{v}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\oksendal}{\O{}ksendal}
+\newcommand{\lO}{\mathcal{O}}
+\newcommand{\1}{\mathds{1}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\bar}[1]{\overline{#1}}
+\newcommand{\intd}[1]{\, \mathrm{d} #1}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\var}{\text{Var}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\cst}{\text{CST}}
+\newcommand{\TOL}{\text{TOL}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\diff}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\difftwo}[2]{\frac{\mathrm{d}^2 #1}{\mathrm{d} #2^2}}
+\newcommand{\figref}[1]{Fig. \ref{#1}}
+\let\P\relax
+\newcommand{\P}{\mathbb{P}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\betrag}[1]{\left|#1\right|}
+\newcommand{\diag}{\text{diag}}
+\newcommand{\sign}{\text{sign}}
+
+\setcounter{MaxMatrixCols}{130}
+
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rem}[prop]{Remark}
+\newtheorem{thrm}[prop]{Theorem}
+\newtheorem{lem}[prop]{Lemma}
+\newtheorem{constr}[prop]{Construction}
+\newtheorem{defi}[prop]{Definition}
+\newtheorem{eg}[prop]{Example}
+\newtheorem{cor}[prop]{Corollary}
+\newtheorem{conj}[prop]{Conjecture}
+
+\graphicspath{ {Figure/} }
+
+\definecolor{weakgray}{gray}{0.6}
+\newenvironment{mblock}[1]{%
+	\setbeamercolor{block body}{bg=weakgray!20, fg=black}
+	\setbeamercolor{block title}{bg=weakgray!50,fg=weakgray!170}
+	\setbeamercolor{block enumerate}{fg=weakgray!170}
+	\setbeamercolor{itemize item}{fg=weakgray!170}
+	\begin{block}{#1}}{\end{block}}
+
+\begin{document}
+	\nocite{*}
+	\begin{frame}
+		\titlepage % Print the title page as the first slide
+	\end{frame}
+	
+	%\begin{frame}
+	%\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+	%\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+	%\end{frame}
+	
+	\section{Motivation}
+	\input{motivation.tex}
+	
+	\appendix
+	
+	
+\end{document} 

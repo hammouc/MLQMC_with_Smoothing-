@@ -13,7 +13,7 @@ T = 1;
 K = 100;
 X_0 = 100;
 
-C = 2; % MC = 1, QMC = 2, both = 3;
+C = 1; % MC = 1, QMC = 2, both = 3;
 
 avg = 0;
 
@@ -82,15 +82,20 @@ if C == 1
     end
     avg/M
     loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red');
+    title("MC for the call option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
+    xlabel("M", 'Interpreter', 'latex');
+    ylabel("Error", 'Interpreter','latex');
+    legend("Exact error", "Error fit of order $M^{-0.5}$", 'Interpreter', 'latex');
+    %saveas(gcf,'../Slides/Figure/MC_Call_with_Smoothing.svg');
 end
 
 if C == 2
     evs = zeros(M,1);
     variances = zeros(M,1);
-    Q = norminv(RQMC_points(gen_vec, shifts, N-1));
-    %P = sobolset(N-1);
-    %P = scramble(P,'MatousekAffineOwen');
-    %Q = transpose(norminv(net(P, M)));
+    %Q = norminv(RQMC_points(gen_vec, shifts, N-1));
+    P = sobolset(N-1);
+    P = scramble(P,'MatousekAffineOwen');
+    Q = transpose(norminv(net(P, M)));
 
     for samples=1:M
         R = zeros(N-1,d);
@@ -156,10 +161,11 @@ if C == 2
     end
     avg/M
     loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red');
-    title("QMC for the digital option and " + M + " samples", 'Interpreter', 'latex');
+    title("QMC for the call option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
     xlabel("M", 'Interpreter', 'latex');
     ylabel("Error", 'Interpreter','latex');
     legend("Exact error", "Error fit of order $M^{-" + boundrate + "}$", 'Interpreter', 'latex');
+    %saveas(gcf,'../Slides/Figure/QMC_Call_with_Smoothing.svg');
 end
 %%
 function path = bridge(N,R,dimension)
@@ -192,6 +198,6 @@ function finalvalG = G(y, B, N, sigma, T, X_0, K, A_inv)
     product = X_0*prod(factors);
     finalvalG = 0;
     if product >= K
-        finalvalG = 1;
+        finalvalG = product - K;
     end
 end

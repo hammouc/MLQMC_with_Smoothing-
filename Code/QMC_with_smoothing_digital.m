@@ -13,7 +13,7 @@ T = 1;
 K = 100;
 X_0 = 100;
 
-C = 1; % MC = 1, QMC = 2, both = 3;
+C = 2; % MC = 1, QMC = 2, both = 3;
 
 avg = 0;
 
@@ -155,12 +155,14 @@ if C == 2
     refsolution = avg/M;
     variance = var(variances);
     bound = zeros(M,1);
+    bound2 = zeros(M,1);
     boundrate = 0.8;
     for i=1:M
-        bound(i) = 1.3*sqrt(variance)/(i^boundrate);
+        bound(i) = 1.65*sqrt(var(variances(1:i)))/sqrt(i);
+        bound2(i) = 1.65*sqrt(variance)/i^boundrate;
     end
     avg/M
-    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red');
+    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red', 1:M, bound2);
     title("QMC for the digital option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
     xlabel("M", 'Interpreter', 'latex');
     ylabel("Error", 'Interpreter','latex');

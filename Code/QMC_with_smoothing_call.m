@@ -1,7 +1,7 @@
 % Set N to a power of two such that we can easily generate the Brownian
 % Bridges and let T be the final time
 d=1;
-N=2^5;
+N=2^3;
 
 gen_vec = 10000;
 shifts = 10;
@@ -13,7 +13,7 @@ T = 1;
 K = 100;
 X_0 = 100;
 
-C = 1; % MC = 1, QMC = 2, both = 3;
+C = 2; % MC = 1, QMC = 2, both = 3;
 
 avg = 0;
 

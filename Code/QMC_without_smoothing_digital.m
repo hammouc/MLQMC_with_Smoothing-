@@ -1,7 +1,7 @@
 d=1;
-N=2^5;
+N=2^2;
 
-gen_vec = 10000;
+gen_vec = 100000;
 shifts = 10;
 M = gen_vec*shifts;
 
@@ -31,14 +31,14 @@ end
 refsol = evs(M)
 variance = var(samplepayoffs);
 bound = zeros(M,1);
-boundrate = 0.6;
+boundrate = 0.7;
 for i=1:M
-    bound(i) = 1.3*sqrt(variance)/(i^boundrate);
+    bound(i) = 1.96*sqrt(variance)/(i^boundrate);
 end
 
 loglog(1:M, abs(evs-refsol), 'blue', 1:M, bound, 'red');
 title("QMC for the digital option and " + M + " samples (without smoothing)", 'Interpreter', 'latex');
 xlabel("M", 'Interpreter', 'latex');
-ylabel("Error", 'Interpreter','latex');
+ylabel("Error (Variance: " + variance + ")", 'Interpreter','latex');
 legend("Exact error", "Error fit of order $M^{-" + boundrate + "}$", 'Interpreter', 'latex');
 %saveas(gcf,'../Slides/Figure/QMC_Digital_without_Smoothing.svg');

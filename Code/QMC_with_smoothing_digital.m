@@ -1,7 +1,7 @@
 % Set N to a power of two such that we can easily generate the Brownian
 % Bridges and let T be the final time
 d=1;
-N=2^5;
+N=2^2;
 
 gen_vec = 10000;
 shifts = 10;
@@ -156,16 +156,15 @@ if C == 2
     variance = var(variances);
     bound = zeros(M,1);
     bound2 = zeros(M,1);
-    boundrate = 0.8;
+    boundrate = 0.85;
     for i=1:M
-        bound(i) = 1.65*sqrt(var(variances(1:i)))/sqrt(i);
-        bound2(i) = 1.65*sqrt(variance)/i^boundrate;
+        bound(i) = 1.96*sqrt(variance)/(i^boundrate);
     end
     avg/M
-    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red', 1:M, bound2);
+    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound);
     title("QMC for the digital option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
     xlabel("M", 'Interpreter', 'latex');
-    ylabel("Error", 'Interpreter','latex');
+    ylabel("Error (Variance: " + variance + ")", 'Interpreter','latex');
     legend("Exact error", "Error fit of order $M^{-" + boundrate + "}$", 'Interpreter', 'latex');
     %saveas(gcf,'../Slides/Figure/QMC_Digital_with_Smoothing.svg');
 end

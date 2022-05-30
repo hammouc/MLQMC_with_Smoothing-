@@ -1,7 +1,7 @@
 % Set N to a power of two such that we can easily generate the Brownian
 % Bridges and let T be the final time
 d=1;
-N=2^2;
+N=2^3;
 
 gen_vec = 10000;
 shifts = 10;
@@ -97,6 +97,8 @@ if C == 2
     %P = scramble(P,'MatousekAffineOwen');
     %Q = transpose(norminv(net(P, M)));
 
+    rmse = zeros(M,1);
+
     for samples=1:M
         R = zeros(N-1,d);
         R(:) = Q(:,samples);
@@ -151,6 +153,7 @@ if C == 2
         avg = avg + laguerretotal;
         evs(samples) = avg/samples;
         variances(samples) = laguerretotal;
+        rmse(samples) = sqrt(1/samples*sum(abs(evs(1:samples)-refsol).^2));
     end
     refsolution = avg/M;
     variance = var(variances);
@@ -161,7 +164,7 @@ if C == 2
         bound(i) = 1.96*sqrt(variance)/(i^boundrate);
     end
     avg/M
-    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound);
+    loglog(1:M, rmse, 'blue', 1:M, bound);
     title("QMC for the digital option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
     xlabel("M", 'Interpreter', 'latex');
     ylabel("Error (Variance: " + variance + ")", 'Interpreter','latex');

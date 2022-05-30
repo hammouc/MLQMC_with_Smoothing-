@@ -1,6 +1,19 @@
 \begin{frame}{Approach}
-	
 	\begin{block}{Idea}
 		To increase the convergence rate of the methods, we introduce a numerical smoothing algorithm to obtain high regularity of the function we want to integrate to get the expected value. 
 	\end{block}
+	Let the payoff function $g$ be of the form
+	\[
+		g(x) = \max(\phi(x), 0) \text{ or }
+		g(x) = \1_{(\phi(x) \geq 0)},
+	\]
+	where $\phi$ is a smooth function satisfying the two conditions
+	\begin{enumerate}
+		\item $\ddi{\phi}{x_j}(x) >0 \text{ for all } x\in \R^d$ \textbf{(Monotonicity condition)}
+		\item $\lim_{x_j \to\infty} \phi(x) = \lim_{x_j \to\infty} \phi(x_j, x_{-j}) = \infty$ for all $x_{-j} \in \R^{d-1}$ \textbf{(Growth condition)}.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	The Monotonicity condition and Growth condition imply that for each fixed $x_{-j}\in \R^{d-1}$, $\phi$ has either a simple root or is positive for all $x_j\in \R$.
 \end{frame}

@@ -25,23 +25,26 @@ for samples = 1:M
     if X > K
         samplepayoffs(samples) = 1;
     end
-    avg = avg + samplepayoffs(samples);
-    evs(samples) = avg/samples;
-    rmse(samples) = sqrt(mean(abs(evs(1:samples)-refsol).^2));
-    rmse(samples) = rmse(samples);
 end
+%% 
 
-refsol = evs(M)
-variance = var(samplepayoffs);
+refsol = sum(samplepayoffs)/M
+variance = zeros(M,1);
 bound = zeros(M,1);
-boundrate = 0.5;
-for i=1:M
-    bound(i) = 1.96*sqrt(variance)/(i^boundrate);
+weakerror = zeros(M,1);
+variances = zeros(M,1);
+boundrate = 1;
+for samples=1:M
+    variances(samples) = mean(samplepayoffs(1:samples));
+    variance(samples) = var(variances(1:samples));
+    weakerror(samples) = abs(mean(samplepayoffs(1:samples))-refsol);
+    bound(samples) = 1.96*variance(100)/(samples^boundrate);
 end
+%% 
 
-loglog(1:M, rmse, 'blue', 1:M, bound, 'red');
+loglog(1:M, weakerror, 'blue', 1:M, variance, 'red', 1:M, bound);
 title("QMC for the digital option and " + M + " samples (without smoothing)", 'Interpreter', 'latex');
 xlabel("M", 'Interpreter', 'latex');
-ylabel("Error (Variance: " + variance + ")", 'Interpreter','latex');
+ylabel("Error (Variance: " + variance(M) + ")", 'Interpreter','latex');
 legend("Exact error", "Error fit of order $M^{-" + boundrate + "}$", 'Interpreter', 'latex');
 %saveas(gcf,'../Slides/Figure/QMC_Digital_without_Smoothing.svg');

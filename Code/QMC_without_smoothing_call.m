@@ -48,15 +48,15 @@ variances = zeros(M,1);
 variance = zeros(M,1);
 rmse = zeros(M,1);
 for samples = 1:M
-    variances(samples) = 1/samples*sum(evs(1:samples));
-    variance(samples) = var(variances(1:samples));
+    variances(samples) = mean(evs(1:samples));
+    variance(samples) = std(variances(1:samples));
     weakerror(samples) = abs(mean(evs(1:samples))-refsol);
 end
 %% 
 
 %variance = var(samplepayoffs);
 bound = zeros(shifts*gen_vec,1);
-boundrate = 0.96;
+boundrate = 0.5;
 for j=1:M
     bound(j) = 814*1/j^boundrate;
 end

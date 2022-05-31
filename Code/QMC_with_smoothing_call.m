@@ -155,12 +155,15 @@ if C == 2
     refsolution = avg/M;
     variance = var(variances);
     bound = zeros(M,1);
-    boundrate = 0.85;
+    boundrate = 0.5;
+    vars = zeros(M,1);
     for i=1:M
+        vars(i) = mean(variances(1:i));
+        vars(i) = std(vars(1:i));
         bound(i) = 1.96*sqrt(variance)/(i^boundrate);
     end
     avg/M
-    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red');
+    loglog(1:M, abs(evs-refsolution), 'blue', 1:M, bound, 'red', 1:M, vars);
     title("QMC for the call option and " + M + " samples (with smoothing)", 'Interpreter', 'latex');
     xlabel("M", 'Interpreter', 'latex');
     ylabel("Error (Variance: " + variance + ")", 'Interpreter','latex');

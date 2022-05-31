@@ -2,7 +2,7 @@ d=1;
 N=2^3;
 
 gen_vec = 10000;
-shifts = 10;
+shifts = 1;
 M = gen_vec*shifts;
 
 sigma = 0.4;
@@ -10,11 +10,11 @@ T = 1;
 K = 100;
 X_0 = 100;
 
-%Q = 1/sqrt(N-1).*norminv(RQMC_points(gen_vec, shifts, N-1));
-%Q = 1/(N-1)^(0.5).*randn(N-1,M);
+%Q = 1/sqrt(N-1).*norminv(RQMC_points(200*gen_vec, shifts, N-1));
+%Q = 1/(N-1)^(0.5).*randn(N-1,200*M);
 P = sobolset(N-1);
 P = scramble(P,'MatousekAffineOwen');
-Q = 1/sqrt(N-1).*transpose(norminv(net(P, 15*M)));
+Q = 1/sqrt(N-1).*transpose(norminv(net(P, 200*M)));
 
 samplepayoffs = zeros(M,1);
 evs = zeros(M,1);
@@ -31,7 +31,7 @@ for samples = 1:M
 end
 
 avg = 0;
-for samples = 1:(15*M)
+for samples = 1:(200*M)
     X = X_0;
     for n = 1:N-1
         X = X + sigma*X*Q(n, samples);
@@ -41,16 +41,19 @@ for samples = 1:(15*M)
     end
 end
 
-refsol = avg/(15*M);
+refsol = avg/(200*M)
 
 weakerror = zeros(M,1);
 variances = zeros(M,1);
 variance = zeros(M,1);
 rmse = zeros(M,1);
 for samples = 1:M
-    variances(samples) = mean(evs(1:samples));
-    variance(samples) = std(variances(1:samples));
+    variances(samples) = (1/samples*sum(evs(1:samples)));
     weakerror(samples) = abs(mean(evs(1:samples))-refsol);
+end
+
+for samples = 1:M
+    variance(samples) = std(variances(1:samples));
 end
 %% 
 
@@ -58,7 +61,7 @@ end
 bound = zeros(shifts*gen_vec,1);
 boundrate = 0.5;
 for j=1:M
-    bound(j) = 814*1/j^boundrate;
+    bound(j) = 500*(1/(j^boundrate));
 end
 
 %% 

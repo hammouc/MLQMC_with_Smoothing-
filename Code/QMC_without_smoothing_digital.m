@@ -10,11 +10,11 @@ T = 1;
 K = 100;
 X_0 = 100;
 
-%Q = 1/sqrt(N-1).*norminv(RQMC_points(gen_vec, shifts, N-1));
+Q = 1/sqrt(N-1).*norminv(RQMC_points(gen_vec, shifts, N-1));
 %Q = 1/(N-1)^(0.5).*randn(N-1,M);
-P = sobolset(N-1);
-P = scramble(P,'MatousekAffineOwen');
-Q = 1/sqrt(N-1).*transpose(norminv(net(P, M)));
+%P = sobolset(N-1);
+%P = scramble(P,'MatousekAffineOwen');
+%Q = 1/sqrt(N-1).*transpose(norminv(net(P, M)));
 samplepayoffs = zeros(M,1);
 evs = zeros(M,1);
 

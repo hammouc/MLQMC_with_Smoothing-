@@ -100,7 +100,7 @@ end
 %% 
 
 %variance = var(samplepayoffs);
-bound = zeros(shifts*gen_vec,1);
+bound = zeros(M,1);
 boundrate = 0.75;
 for j=1:M
     bound(j) = 110*1/(j^boundrate);
@@ -108,7 +108,7 @@ end
 
 %% 
 
-loglog(1:M, weakerror, gen_vec, 1.96.*gen_shift_var);
+loglog(1:M, weakerror, gen_vec, 1.96.*gen_shift_var, 1:M, bound);
 title("QMC for the call option and " + M + " samples (without smoothing)", 'Interpreter', 'latex');
 xlabel("M", 'Interpreter', 'latex');
 ylabel("Error (Variance: " + variance(M) + ")", 'Interpreter','latex');

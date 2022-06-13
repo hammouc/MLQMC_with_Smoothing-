@@ -38,7 +38,7 @@ boundrate = 0.5;
 
 for samples=1:M
     weakerror(samples) = abs(mean(samplepayoffs(1:samples))-refsol);
-    bound(samples) = 1/(samples^boundrate);
+    bound(samples) = 0.6/(samples^boundrate);
 end
 %% 
 d=1;
